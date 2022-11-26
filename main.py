@@ -2,6 +2,7 @@ import pygame
 import game_rogue
 
 
+
 def display(room):
     pygame.init()
     screen = pygame.display.set_mode((800, 600))

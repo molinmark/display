@@ -1,5 +1,5 @@
 import pygame
-import sys
+import sys, os
 import game_rogue
 import pygame_menu
 pygame.init()
@@ -47,7 +47,10 @@ class Display():
                 if room.matrix[i][j] == '╬':
                     pygame.draw.rect(screen, (0, 125, 255), pygame.Rect(j * 50, i * 50, 50, 50))
                 elif room.matrix[i][j] == '๏':
-                    pygame.draw.rect(screen, (0, 225, 55), pygame.Rect(j * 50, i * 50, 50, 50))
+                    image = pygame.image.load(os.path.join( 'img_van.png')).convert()
+                    picture = pygame.transform.scale(image, (50, 50))
+                    screen.blit(picture, (j * 50, i * 50, 50, 50))
+
                 elif room.matrix[i][j] == '☿':
                     pygame.draw.rect(screen, (210, 125, 115), pygame.Rect(j * 50, i * 50, 50, 50))
                 elif room.matrix[i][j] == '†':
@@ -58,7 +61,10 @@ class Display():
 
     def alg(self,D1):
         while self.person1.health>0:
+
             for i in range(self.N):
+                pygame.mixer.music.load('welcome-to-the-club.mp3')
+                pygame.mixer.music.play()
                 self.rooms[i] = game_rogue.room()
                 self.rooms[i].generation()
                 D1.paint(self.rooms[i])
@@ -96,7 +102,8 @@ class Display():
                         action = D1.button()
                         if action == ('f' or 'F'):
                             self.person1.attack_result(self.monster[n])
-
+                            pygame.mixer.music.load('568023243432.mp3')
+                            pygame.mixer.music.play()
                         elif action == ('g' or 'G') and attack_action == True:
                             self.person1.start_defence(monster[n])
 
@@ -190,14 +197,14 @@ class Display():
                         return 'e'
 
 def main():
-    print(menu.widgets)
+
     D1=Display()
     D1.alg(D1)
 
 
 menu = pygame_menu.Menu('Welcome', 600, 400, theme=pygame_menu.themes.THEME_BLUE)
 menu.add.text_input( 'Name :', name =  ' ')
-menu.add.selector('Раса :', [('Эльф', 1), ('Человек', 2), ('Гном', 3)], onchange = set_rases)
+#menu.add.selector('Раса :', [('Эльф', 1), ('Человек', 2), ('Гном', 3)], onchange = set_rases)
 menu.add.text_input( 'Добро пожаловать в подземелье')
 menu.add.button('Play', main)
 menu.add.button('Quit', pygame_menu.events.EXIT)

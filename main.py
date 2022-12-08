@@ -7,10 +7,6 @@ pygame.mixer.init()
 width = 1000
 height = 800
 screen = pygame.display.set_mode((width, height))
-def set_rases():
-    # тут в зависимости от выбора значения меняется раса, которую мы передаём в game_rogue.privetstvie()
-
-    5
 
 class Display():
     def __init__(self):
@@ -27,7 +23,6 @@ class Display():
                                     (180, 0, 0))
         screen.blit(self.text1, (600, 50))
 
-
     def paint_score(self):
         self.pole = pygame.font.Font(None, 24)
         self.pole_text  = self.pole.render('Здоровье '+ str(self.person1.health) +
@@ -36,8 +31,9 @@ class Display():
         self.pole2 = pygame.font.Font(None, 24)
         self.pole_text2 = self.pole2.render('Урон ' + str(self.person1.attack_damage) +
                                           ' радиус атаки ' + str(self.person1.attack_range) , True, (180, 0, 0))
-        screen.blit(self.pole_text, (0,0))
-        screen.blit(self.pole_text2, (0,30))
+        screen.blit(self.pole_text, (0,700))
+        screen.blit(self.pole_text2, (0,650))
+
 
 
     def paint(self,room):
@@ -77,6 +73,7 @@ class Display():
                     chest.set_colorkey((255, 255, 255))
                     picture_chest = pygame.transform.scale(chest, (50, 50))
                     screen.blit(picture_chest, (j * 50, i * 50, 50, 50))
+        self.paint_score()
 
         pygame.display.flip()
 
@@ -109,10 +106,9 @@ class Display():
                 self.item[i].parametres()
 
                 n = i
-                #self.monster[i] = game_rogue.making_monster()
+
 
                 while self.person1.health>0:
-                    self.paint_score()
                     attack_action = False
                     if (abs(self.rooms[n].X0_monster0 - self.rooms[n].X0) <= self.monster[n].attack_range) and (
                             abs(self.rooms[n].Y0_monster0 - self.rooms[n].Y0) <= self.monster[n].attack_range) and self.monster[
@@ -123,16 +119,17 @@ class Display():
                         if self.person1.health <= 0:
                             self.pole3 = pygame.font.Font(None, 30)
                             self.pole_text3 = self.pole3.render('Вы погибли', True, (200, 100, 0))
+                            menu()
 
                             screen.blit(self.pole_text3, (width/2, height/2))
 
                     if (abs(self.rooms[n].X0_monster0 - self.rooms[n].X0) <= self.person1.attack_range) and (
                             abs(self.rooms[n].Y0_monster0 - self.rooms[n].Y0) <= self.person1.attack_range) and self.monster[n].health > 0:
-                        #текст
+
                         self.f1 = pygame.font.Font(None, 36)
                         self.text1 = self.f1.render('БЕЙ!(f)', True,
                                                     (180, 0, 0))
-                        screen.blit(self.text1, (600, 50))
+                        screen.blit(self.text1, (600, 650))
                         pygame.display.flip()
                         action = D1.button()
                         if action == ('f' or 'F'):
@@ -149,13 +146,14 @@ class Display():
                                 print('Вы погибли, игра закончена')
 
 
+
+
                     for j in range(self.person1.speed):
-                        self.paint_score()
-                        # текст
+
                         self.f1 = pygame.font.Font(None, 36)
                         self.text1 = self.f1.render('ИДИ!(wasd)', True,
                                                     (180, 0, 0))
-                        screen.blit(self.text1, (600, 100))
+                        screen.blit(self.text1, (600, 700))
                         pygame.display.flip()
 
                         new_cord = self.person1.move(D1.button(), self.rooms[n].cord0, self.rooms[n].cord,self.rooms[n].exit, self.rooms[n].input, self.rooms[n].cord_monster0)
@@ -193,7 +191,7 @@ class Display():
                             self.f1 = pygame.font.Font(None, 36)
                             self.text1 = self.f1.render(f'БЕРИ {self.item[n].name_items}(e)!', True,
                                                         (180, 0, 0))
-                            screen.blit(self.text1, (300, 100))
+                            screen.blit(self.text1, (300, 700))
                             pygame.display.flip()
 
                             action_predmet = D1.button()
@@ -204,7 +202,6 @@ class Display():
                                 self.person1.attack_damage += characteristics[1]
                                 self.person1.health += characteristics[2]
 
-            print(D1.button())
 
 
     def button(self):
